@@ -1,0 +1,20 @@
+from collections import deque
+quantity_of_food = int(input())
+people_deque = deque(map(int, input().split(' ')))
+
+print(max(people_deque))
+
+while len(people_deque) > 0:
+    if quantity_of_food - people_deque[0] >= 0:
+        people_to_remove = people_deque.popleft()
+        quantity_of_food -= people_to_remove
+    else:
+        break
+
+if len(people_deque) > 0:
+    people_left = []
+    while len(people_deque) > 0:
+        people_left.append(people_deque.popleft())
+    print(f'Orders left:', *people_left)
+else:
+    print('Orders complete')
