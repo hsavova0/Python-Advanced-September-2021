@@ -1,0 +1,5 @@
+s = input().split()
+
+while len(s) > 0:
+    removed_element = s.pop()
+    print(removed_element, end=' ')
