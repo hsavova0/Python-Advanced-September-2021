@@ -1,0 +1,26 @@
+PUSH = 1
+DELETE = 2
+PRINT_MAX = 3
+PRINT_MIN = 4
+
+n = int(input())
+numbers_stack = []
+final_stack = []
+
+for i in range(n):
+    query = input().split()
+    if len(query) > 1:
+        numbers_stack.append(int(query[1]))
+    else:
+        command = int(query[0])
+        if len(numbers_stack) > 0:
+            if command == DELETE:
+                numbers_stack.pop()
+            elif command == PRINT_MAX:
+                print(max(numbers_stack))
+            elif command == PRINT_MIN:
+                print(min(numbers_stack))
+while len(numbers_stack) > 0:
+    final_number_to_append = numbers_stack.pop()
+    final_stack.append(final_number_to_append)
+print(*final_stack, sep=', ')
