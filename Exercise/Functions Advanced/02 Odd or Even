@@ -1,0 +1,10 @@
+command = input()
+numbers = [int(x) for x in input().split()]
+
+sum_even_numbers = sum(filter(lambda x: x % 2 == 0, numbers))
+sum_odd_numbers = sum(filter(lambda x: not x % 2 == 0, numbers))
+
+if command == 'Even':
+    print(sum_even_numbers * len(numbers))
+else:
+    print(sum_odd_numbers * len(numbers))
