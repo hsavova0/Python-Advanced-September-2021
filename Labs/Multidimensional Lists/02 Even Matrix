@@ -30,3 +30,33 @@ for row in matrix:
     even_matrix.append(only_even)
 
 print(even_matrix)
+
+# Variant 2
+def read_matrix():
+    n = int(input())
+    matrix = []
+    for _ in range(n):
+        row = [int(i) for i in input().split()]
+        matrix.append(row)
+    return matrix
+
+
+matrix = read_matrix()
+
+n = len(matrix)
+m = len(matrix[0])
+
+primary_diagonal = []
+secondary_diagonal = []
+
+for i in range(n):
+    primary_diagonal.append(matrix[i][i])
+
+for i in range(n):
+    secondary_diagonal.append(matrix[i][n - i - 1])
+
+sum_primary = sum(primary_diagonal)
+sum_secondary = sum(secondary_diagonal)
+difference = abs(sum_primary-sum_secondary)
+
+print(difference)
