@@ -1,0 +1,52 @@
+size = int(input())
+
+matrix = []
+
+for _ in range(size):
+    numbers = [int(i) for i in input().split()]
+    matrix.append(numbers)
+
+coordinates = input().split()
+
+for coordinate in coordinates:
+    row, col = [int(i) for i in coordinate.split(',')]
+    bomb = matrix[row][col]
+    matrix[row][col] = 0
+    if col + 1 < size:
+        if matrix[row][col + 1] > 0:
+            matrix[row][col + 1]-= bomb
+    if col - 1 >= 0:
+        if matrix[row][col - 1] > 0:
+            matrix[row][col - 1] -= bomb
+    if row - 1 >= 0:
+        if matrix[row - 1][col] > 0:
+            matrix[row - 1][col] -= bomb
+        if col + 1 < size:
+            if matrix[row - 1][col + 1] > 0:
+                matrix[row - 1][col + 1] -= bomb
+        if col - 1 >= 0:
+            if matrix[row - 1][col - 1] > 0:
+                matrix[row - 1][col - 1] -= bomb
+    if row + 1 < size:
+        if matrix[row + 1][col] > 0:
+            matrix[row + 1][col] -= bomb
+        if col + 1 < size:
+            if matrix[row + 1][col + 1] > 0:
+                matrix[row + 1][col + 1] -= bomb
+        if col - 1 >= 0:
+            if matrix[row + 1][col - 1] > 0:
+                matrix[row + 1][col - 1] -= bomb
+alive_cells = 0
+total_sum = 0
+
+for r in range(size):
+    for c in range(size):
+        if matrix[r][c] > 0:
+            alive_cells += 1
+            total_sum += matrix[r][c]
+
+print(f'Alive cells: {alive_cells}')
+print(f'Sum: {total_sum}')
+
+for el in matrix:
+    print(' '.join([str(i) for i in el]))
