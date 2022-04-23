@@ -1,0 +1,58 @@
+from collections import deque
+size = int(input())
+commands = deque(input().split())
+matrix = []
+current_row = 0
+current_col = 0
+total_coals = 0
+is_reached_end = False
+
+# Create the Matrix
+for _ in range(size):
+    row = input().split()
+    matrix.append(row)
+
+# Find the position
+for r in range(size):
+    for c in range(size):
+        if matrix[r][c] == 's':
+            current_row = r
+            current_col = c
+
+# Calculate the number of coals
+for r in range(size):
+    for c in range(size):
+        if matrix[r][c] == 'c':
+            total_coals += 1
+
+while commands:
+    command = commands.popleft()
+    if command == 'left':
+        if current_col - 1 < 0:
+            continue
+        current_col -= 1
+    if command == 'right':
+        if current_col + 1 >= size:
+            continue
+        current_col += 1
+    if command == 'up':
+        if current_row - 1 < 0:
+            continue
+        current_row -= 1
+    if command == 'down':
+        if current_row + 1 >= size:
+            continue
+        current_row += 1
+    if matrix[current_row][current_col] == 'c':
+        total_coals -= 1
+        matrix[current_row][current_col] = '*'
+    if total_coals == 0:
+        print(f'You collected all coal! ({current_row}, {current_col})')
+        break
+    if matrix[current_row][current_col] == 'e':
+        is_reached_end = True
+        print(f'Game over! ({current_row}, {current_col})')
+        break
+
+if total_coals > 0 and is_reached_end == False and len(commands) == 0:
+    print(f'{total_coals} pieces of coal left. ({current_row}, {current_col})')
