@@ -1,0 +1,82 @@
+def is_outside(size, row, col, boolean_value):
+    if 0 < row >= size or 0 < col >= size:
+        return boolean_value
+
+
+n = int(input())
+
+matrix = []
+
+alice_row, alice_col = 0, 0
+tea_bags = 0
+is_outside_value = False
+is_rabbit_hol = False
+
+for row in range(n):
+    line = input().split()
+    matrix.append(line)
+    for col in range(len(line)):
+        if matrix[row][col] == 'A':
+            alice_row = row
+            alice_col = col
+matrix[alice_row][alice_col] = '*'
+while True:
+    command = input()
+    if command == 'up':
+        alice_row -= 1
+        if is_outside(n, alice_row, alice_col, is_outside_value):
+            print("Alice didn't make it to the tea party.")
+            break
+        if matrix[alice_row][alice_col] == 'R':
+            is_rabbit_hol = True
+            matrix[alice_row][alice_col] = '*'
+            print("Alice didn't make it to the tea party.")
+            break
+        if matrix[alice_row][alice_col].isdigit():
+            tea_bags += int(matrix[alice_row][alice_col])
+        matrix[alice_row][alice_col] = '*'
+    if command == 'down':
+        alice_row += 1
+        if is_outside(n, alice_row, alice_col, is_outside_value):
+            print("Alice didn't make it to the tea party.")
+            break
+        if matrix[alice_row][alice_col] == 'R':
+            is_rabbit_hol = True
+            matrix[alice_row][alice_col] = '*'
+            print("Alice didn't make it to the tea party.")
+            break
+        if matrix[alice_row][alice_col].isdigit():
+            tea_bags += int(matrix[alice_row][alice_col])
+        matrix[alice_row][alice_col] = '*'
+    if command == 'right':
+        alice_col += 1
+        if is_outside(n, alice_row, alice_col, is_outside_value):
+            print("Alice didn't make it to the tea party.")
+            break
+        if matrix[alice_row][alice_col] == 'R':
+            is_rabbit_hol = True
+            matrix[alice_row][alice_col] = '*'
+            print("Alice didn't make it to the tea party.")
+            break
+        if matrix[alice_row][alice_col].isdigit():
+            tea_bags += int(matrix[alice_row][alice_col])
+        matrix[alice_row][alice_col] = '*'
+    if command == 'left':
+        alice_col -= 1
+        if is_outside(n, alice_row, alice_col, is_outside_value):
+            print("Alice didn't make it to the tea party.")
+            break
+        if matrix[alice_row][alice_col] == 'R':
+            is_rabbit_hol = True
+            matrix[alice_row][alice_col] = '*'
+            print("Alice didn't make it to the tea party.")
+            break
+        if matrix[alice_row][alice_col].isdigit():
+            tea_bags += int(matrix[alice_row][alice_col])
+        matrix[alice_row][alice_col] = '*'
+    if tea_bags >= 10:
+        print('She did it! She went to the party.')
+        break
+
+for el in matrix:
+    print(' '.join(el))
