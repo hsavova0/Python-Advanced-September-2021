@@ -1,0 +1,89 @@
+def directions(row, col, direction, steps):
+    if direction == 'up':
+        return r - steps, col
+    if direction == 'down':
+        return r + steps, col
+    if direction == 'right':
+        return r, col - steps
+    if direction == 'left':
+        return r, col + steps
+
+
+def is_inside(r, c, size):
+    if 0 <= r < size and 0 <= c < size:
+        return True
+    return False
+
+
+def shooted_targets_positions(row, col, matrix, direction):
+    if direction == 'up':
+        while row >= 0:
+            row -= 1
+            if matrix[row][col] == 'x':
+                return [row, col]
+    if direction == 'down':
+        while row < len(matrix):
+            row += 1
+            if matrix[row][col] == 'x':
+                return [row, col]
+    if direction == 'left':
+        while col >= 0:
+            col -= 1
+            if matrix[row][col] == 'x':
+                return [row, col]
+    if direction == 'right':
+        while 0 <= col < len(matrix):
+            col += 1
+            if matrix[row][col] == 'x':
+                return [row, col]
+
+
+size = 5
+matrix = []
+
+shooter_row, shooter_col = 0, 0
+total_targets = 0
+# creating the matrix
+for _ in range(size):
+    matrix.append(input().split())
+# finding the shooter
+for r in range(len(matrix)):
+    for c in range(len(matrix[r])):
+        if matrix[r][c] == 'A':
+            shooter_row, shooter_col = r, c
+            break
+# finding the total number of targets
+for r in range(len(matrix)):
+    for c in range(len(matrix[r])):
+        if matrix[r][c] == 'x':
+            total_targets += 1
+
+commands_number = int(input())
+
+shooted_targets_list = []
+
+for _ in range(commands_number):
+    commands = input().split()
+    if commands[0] == 'move':
+        command = commands[1]
+        step = int(commands[2])
+        possible_row, possible_col = directions(shooter_row, shooter_col, command, step)
+        if is_inside(possible_row, possible_col, size):
+            if matrix[possible_row][possible_col] == '.':
+                shooter_row, shooter_col = possible_row, possible_col
+    if commands[0] == 'shoot':
+        direction = commands[1]
+        current_row, current_col = shooter_row, shooter_col
+        shooted_targets = shooted_targets_positions(current_row, current_col, matrix, direction)
+        shooted_targets_list.append(shooted_targets)
+
+total_targets -= len(shooted_targets_list)
+
+if total_targets == 0:
+    print(f'Training completed! All {len(shooted_targets_list)} targets hit.')
+else:
+    print(f'Training not completed! {total_targets} targets left.')
+
+for el in shooted_targets_list:
+    if el is not None:
+        print(el)
