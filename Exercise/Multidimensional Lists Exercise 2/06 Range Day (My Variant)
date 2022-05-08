@@ -4,9 +4,9 @@ def directions(row, col, direction, steps):
     if direction == 'down':
         return r + steps, col
     if direction == 'right':
-        return r, col - steps
-    if direction == 'left':
         return r, col + steps
+    if direction == 'left':
+        return r, col - steps
 
 
 def is_inside(r, c, size):
