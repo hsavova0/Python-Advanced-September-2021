@@ -1,0 +1,115 @@
+def is_outside(row, col, size):
+    if row < 0 or col < 0 or row >= size or col >= size:
+        return True
+    return False
+
+
+def get_next_position(direction, r, c, steps=1):
+    if direction == 'up':
+        return r - steps, c
+    if direction == 'down':
+        return r + steps, c
+    if direction == 'left':
+        return r, c - steps
+    return r, c + steps
+
+
+presents = int(input())
+n = int(input())
+
+matrix = []
+
+santa_row, santa_col = 0, 0
+
+is_cookies_found = False
+
+nice_kids = 0
+naughty_kids = 0
+presents_give = 0
+
+for row in range(n):
+    element = input().split()
+    matrix.append(element)
+    for col in range(n):
+        if matrix[row][col] == 'S':
+            santa_row, santa_col = row, col
+        elif matrix[row][col] == 'V':
+            nice_kids += 1
+        elif matrix[row][col] == 'X':
+            naughty_kids += 1
+while True:
+    command = input()
+    if command == 'Christmas morning':
+        break
+    if presents == 0:
+        break
+    current_row, current_col = get_next_position(command, santa_row, santa_col)
+    if is_outside(current_row, current_col, n):
+        continue
+    matrix[santa_row][santa_col] = '-'
+    santa_row, santa_col = current_row, current_col
+    if matrix[santa_row][santa_col] == 'V':
+        presents -= 1
+        nice_kids -= 1
+        presents_give += 1
+        matrix[santa_row][santa_col] = '-'
+    elif matrix[santa_row][santa_col] == 'X':
+        matrix[santa_row][santa_col] = '-'
+    elif matrix[santa_row][santa_col] == 'C':
+        is_cookies_found = True
+        matrix[santa_row][santa_col] = 'S'
+        break
+    matrix[santa_row][santa_col] = 'S'
+
+total_number_of_kids = nice_kids + naughty_kids
+
+if is_cookies_found:
+    while presents:
+        step = 1
+        command = 'up'
+        current_row, current_col = (get_next_position(command, santa_col, santa_row, step))
+        if matrix[current_row][current_col] == 'V' or matrix[current_row][current_col] == 'X':
+            presents -= 1
+            matrix[current_row][current_col] = '-'
+            total_number_of_kids -= 1
+            presents_give += 1
+        command = 'down'
+        current_row, current_col = (get_next_position(command, santa_col, santa_row, step))
+        if matrix[current_row][current_col] == 'V' or matrix[current_row][current_col] == 'X':
+            presents -= 1
+            matrix[current_row][current_col] = '-'
+            total_number_of_kids -= 1
+            presents_give += 1
+        command = 'left'
+        current_row, current_col = (get_next_position(command, santa_col, santa_row, step))
+        if matrix[current_row][current_col] == 'V' or matrix[current_row][current_col] == 'X':
+            presents -= 1
+            matrix[current_row][current_col] = '-'
+            total_number_of_kids -= 1
+            presents_give += 1
+        command = 'right'
+        current_row, current_col = (get_next_position(command, santa_col, santa_row, step))
+        if matrix[current_row][current_col] == 'V' or matrix[current_row][current_col] == 'X':
+            presents -= 1
+            matrix[current_row][current_col] = '-'
+            total_number_of_kids -= 1
+            presents_give += 1
+        step += 1
+
+if not is_cookies_found and nice_kids > 0:
+    print('Santa ran out of presents!')
+elif is_cookies_found and total_number_of_kids > 0:
+    print('Santa ran out of presents!')
+
+for el in matrix:
+    print(' '.join(el))
+
+if not is_cookies_found and nice_kids == 0:
+    print(f"Good job, Santa! {presents_give} happy nice kid/s.")
+elif not is_cookies_found and nice_kids > 0:
+    print(f'No presents for {nice_kids} nice kid/s.')
+
+if is_cookies_found and total_number_of_kids == 0:
+    print(f"Good job, Santa! {presents_give} happy nice kid/s.")
+elif is_cookies_found and total_number_of_kids > 0:
+    print(f'No presents for {total_number_of_kids} nice kid/s.')
