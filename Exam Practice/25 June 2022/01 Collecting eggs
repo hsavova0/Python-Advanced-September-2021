@@ -1,1 +1,35 @@
-pass
+from collections import deque
+
+eggs_size = deque([int(el) for el in input().split(', ')])
+piece_of_paper = [int(el) for el in input().split(', ')]
+
+max_box_size = 50
+filled_out_boxes = 0
+
+while eggs_size and piece_of_paper:
+    current_egg = eggs_size.popleft()
+    current_paper = piece_of_paper.pop()
+    # conditions
+    if current_egg <= 0:
+        piece_of_paper.append(current_paper)
+        continue
+    if current_egg == 13:
+        first_paper = piece_of_paper.pop(0)
+        piece_of_paper.append(first_paper)
+        piece_of_paper.insert(0, current_paper)
+        continue
+    if current_egg + current_paper <= max_box_size:
+        filled_out_boxes += 1
+
+if filled_out_boxes > 0:
+    print(f'Great! You filled {filled_out_boxes} boxes.')
+else:
+    print('Sorry! You couldn\'t fill any boxes!')
+
+if eggs_size:
+    eggs_size_str = [str(el) for el in eggs_size]
+    print(f'Eggs left: {", ".join(eggs_size_str)}')
+
+if piece_of_paper:
+    piece_of_paper_str = [str(el) for el in piece_of_paper]
+    print(f'Pieces of paper left: {", ".join(piece_of_paper_str)}')
