@@ -1,0 +1,47 @@
+from collections import deque
+
+player_1, player_2 = input().split(', ')
+
+players_deque = deque([player_1, player_2])
+
+maze_board = []
+
+tom_hit_a_wall = False
+jerry_hit_a_wall = False
+
+for r in range(6):
+    maze_board.append(input().split())
+
+while True:
+    coordinates = input()
+    if coordinates == '':
+        print(f'{players_deque[0]}found the Exit and wins the game!')
+    coordinates_list = []
+    for el in coordinates:
+        if el.isdigit():
+            coordinates_list.append(el)
+    row, col = int(coordinates_list[0]), int(coordinates_list[1])
+    coordinates_list.clear()
+    current_player = players_deque.popleft()
+    current_position = maze_board[row][col]
+    if tom_hit_a_wall and current_player == 'Tom':
+        tom_hit_a_wall = False
+        players_deque.append(current_player)
+        continue
+    if jerry_hit_a_wall and current_player == 'Jerry':
+        jerry_hit_a_wall = False
+        players_deque.append(current_player)
+        continue
+    if current_position == 'E':
+        print(f'{current_player} found the Exit and wins the game!')
+        break
+    if current_position == 'T':
+        print(f'{current_player} is out of the game! The winner is {players_deque[0]}.')
+        break
+    if current_position == 'W':
+        if current_player == 'Tom':
+            tom_hit_a_wall = True
+        if current_player == 'Jerry':
+            jerry_hit_a_wall = True
+        print(f'{current_player} hits a wall and needs to rest.')
+    players_deque.append(current_player)
