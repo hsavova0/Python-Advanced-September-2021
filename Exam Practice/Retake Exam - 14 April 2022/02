@@ -1,0 +1,119 @@
+def is_invalid_position(size, row, col):
+    if row < 0 or col < 0 or row >= size or col >= size:
+        return True
+    return False
+
+
+mars_matrix = []
+matrix_size = 6
+rover_row, rover_col = 0, 0
+
+water_deposit = 0
+metal_deposit =  0
+concrete_deposit = 0
+
+for _ in range(matrix_size):
+    el = input().split()
+    mars_matrix.append(el)
+
+for r in range(len(mars_matrix)):
+    for c in range(len(mars_matrix[r])):
+        if mars_matrix[r][c] == 'E':
+            rover_row, rover_col = r, c
+
+directions = input().split(', ')
+
+while directions:
+    direction = directions.pop(0)
+    if direction == 'up':
+        rover_row -= 1
+        if is_invalid_position(matrix_size, rover_row, rover_col):
+            rover_row = 5
+            if is_invalid_position(matrix_size, rover_row, rover_col):
+                rover_col = 0
+                if mars_matrix[rover_row][rover_col] == 'W':
+                    water_deposit += 1
+                    print(f'Water deposit found at {rover_row, rover_col}')
+                if mars_matrix[rover_row][rover_col] == 'M':
+                    metal_deposit += 1
+                    print(f'Metal deposit found at {rover_row, rover_col}')
+                if mars_matrix[rover_row][rover_col] == 'C':
+                    concrete_deposit += 1
+                    print(f'Concrete deposit found at {rover_row, rover_col}')
+                if mars_matrix[rover_row][rover_col] == 'R':
+                    print(f'Rover got broken at {rover_row, rover_col}')
+                    break
+            rover_row -= 1
+    elif direction == 'down':
+        rover_row += 1
+        if is_invalid_position(matrix_size, rover_row, rover_col):
+            rover_row = 0
+            if is_invalid_position(matrix_size, rover_row, rover_col):
+                rover_col = 0
+                if mars_matrix[rover_row][rover_col] == 'W':
+                    water_deposit += 1
+                    print(f'Water deposit found at {rover_row, rover_col}')
+                if mars_matrix[rover_row][rover_col] == 'M':
+                    metal_deposit += 1
+                    print(f'Metal deposit found at {rover_row, rover_col}')
+                if mars_matrix[rover_row][rover_col] == 'C':
+                    concrete_deposit += 1
+                    print(f'Concrete deposit found at {rover_row, rover_col}')
+                if mars_matrix[rover_row][rover_col] == 'R':
+                    print(f'Rover got broken at {rover_row, rover_col}')
+                    break
+            rover_row += 1
+    elif direction == 'left':
+        rover_col -= 1
+        if is_invalid_position(matrix_size, rover_row, rover_col):
+            rover_col = 5
+            if is_invalid_position(matrix_size, rover_row, rover_col):
+                rover_col = 0
+                if mars_matrix[rover_row][rover_col] == 'W':
+                    water_deposit += 1
+                    print(f'Water deposit found at {rover_row, rover_col}')
+                if mars_matrix[rover_row][rover_col] == 'M':
+                    metal_deposit += 1
+                    print(f'Metal deposit found at {rover_row, rover_col}')
+                if mars_matrix[rover_row][rover_col] == 'C':
+                    concrete_deposit += 1
+                    print(f'Concrete deposit found at {rover_row, rover_col}')
+                if mars_matrix[rover_row][rover_col] == 'R':
+                    print(f'Rover got broken at {rover_row, rover_col}')
+                    break
+            rover_col -= 1
+    elif direction == 'right':
+        rover_col += 1
+        if is_invalid_position(matrix_size, rover_row, rover_col):
+            rover_col = 0
+            if mars_matrix[rover_row][rover_col] == 'W':
+                water_deposit += 1
+                print(f'Water deposit found at {rover_row, rover_col}')
+            if mars_matrix[rover_row][rover_col]== 'M':
+                metal_deposit += 1
+                print(f'Metal deposit found at {rover_row, rover_col}')
+            if mars_matrix[rover_row][rover_col] == 'C':
+                concrete_deposit += 1
+                print(f'Concrete deposit found at {rover_row, rover_col}')
+            if mars_matrix[rover_row][rover_col] == 'R':
+                print(f'Rover got broken at {rover_row, rover_col}')
+                break
+            rover_col += 1
+    current_position = mars_matrix[rover_row][rover_col]
+    if current_position == 'W':
+        water_deposit += 1
+        print(f'Water deposit found at {rover_row, rover_col}')
+    if current_position == 'M':
+        metal_deposit += 1
+        print(f'Metal deposit found at {rover_row, rover_col}')
+    if current_position == 'C':
+        concrete_deposit += 1
+        print(f'Concrete deposit found at {rover_row, rover_col}')
+    if current_position == 'R':
+        print(f'Rover got broken at {rover_row, rover_col}')
+        break
+
+if water_deposit > 0 and metal_deposit > 0 and concrete_deposit > 0:
+    print('Area suitable to start the colony.')
+else:
+    print('Area not suitable to start the colony.')
