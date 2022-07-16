@@ -1,0 +1,63 @@
+from collections import deque
+
+
+def is_matched(word, consonant_collection, vowel_collection, found_word):
+    found_word = False
+    new_word = ''
+    if word == 'daffodil':
+        if consonant_collection.count('f') > 1:
+            pass
+        else:
+            return False
+    for el in word:
+        if el in consonant_collection and el not in new_word:
+            new_word += el
+        if el in vowel_collection and el not in new_word:
+            new_word += el
+    if len(new_word) == len(word):
+        print(f'Word found: {word}')
+        return True
+    return False
+
+
+vowels = deque(input().split())
+consonants = input().split()
+
+word_1 = 'rose'
+word_2 = 'tulip'
+word_3 = 'lotus'
+word_4 = 'daffodil'
+
+matched_vowels = []
+matched_consonants = []
+is_found = False
+new_word = ''
+
+while vowels and consonants:
+    current_vowel = vowels.popleft()
+    current_consonant = consonants.pop()
+    if current_consonant in word_1 or current_consonant in word_2 or current_consonant in word_3 or current_consonant in word_4:
+        matched_consonants.append(current_consonant)
+    if current_vowel in word_1 or current_vowel in word_2 or current_vowel in word_3 or current_vowel in word_4:
+        matched_vowels.append(current_vowel)
+    if is_matched(word_1, matched_consonants, matched_vowels, is_found):
+        is_found = True
+        break
+    if is_matched(word_2, matched_consonants, matched_vowels, is_found):
+        is_found = True
+        break
+    if is_matched(word_3, matched_consonants, matched_vowels, is_found):
+        is_found = True
+        break
+    if is_matched(word_4, matched_consonants, matched_vowels, is_found):
+        is_found = True
+        break
+
+if not is_found:
+    print('Cannot find any word!')
+
+if vowels:
+    print(f'Vowels left: {" ".join(vowels)}')
+
+if consonants:
+    print(f'Consonants left: {" ".join(consonants)}')
