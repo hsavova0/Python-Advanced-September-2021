@@ -1,1 +1,42 @@
-a
+from collections import deque
+seats = input().split(', ')
+num_1 = deque([int(x) for x in input().split(', ')])
+num_2 = deque([int(x) for x in input().split(', ')])
+
+max_matches = 3
+max_rotations = 10
+
+matches = 0
+rotations = 0
+
+matched_seats = []
+match_found = False
+
+while matches < 3 and rotations < 10:
+    if matches == max_matches:
+        break
+    if rotations == max_rotations:
+        break
+    first_num = num_1.popleft()
+    second_num = num_2.pop()
+    rotations += 1
+    sum_of_num1_num2 = first_num + second_num
+    character = chr(sum_of_num1_num2)
+    seat_1 = str(first_num) + character
+    seat_2 = str(second_num) + character
+    if seat_1 in seats:
+        matches += 1
+        matched_seats.append(seat_1)
+        match_found = True
+    if seat_2 in seats:
+        matches += 1
+        matched_seats.append(seat_2)
+        match_found = True
+    if match_found:
+        match_found = False
+        continue
+    num_1.append(first_num)
+    num_2.appendleft(second_num)
+
+print(f'Seat matches: {", ".join(matched_seats)}')
+print(f'Rotations count: {rotations}')
