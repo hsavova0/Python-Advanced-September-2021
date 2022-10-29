@@ -1,0 +1,51 @@
+size = int(input())
+racing_number = input()
+race_matrix = []
+
+for r in range(size):
+    race_matrix.append(input().split())
+
+car_row, car_col = 0, 0
+kilometers = 0
+
+finished = False
+disqualified = False
+
+while True:
+    direction = input()
+    if direction == 'End':
+        disqualified = True
+        break
+    if direction == 'up':
+        car_row -= 1
+    elif direction == 'down':
+        car_row += 1
+    elif direction == 'left':
+        car_col -= 1
+    elif direction == 'right':
+        car_col += 1
+    if race_matrix[car_row][car_col] == '.':
+        kilometers += 10
+    elif race_matrix[car_row][car_col] == 'T':
+        race_matrix[car_row][car_col] = '.'
+        for r in range(len(race_matrix)):
+            for c in range(len(race_matrix[r])):
+                if race_matrix[r][c] == 'T':
+                    race_matrix[r][c] = '.'
+                    car_row, car_col = r, c
+        kilometers += 30
+    elif race_matrix[car_row][car_col] == 'F':
+        kilometers += 10
+        finished = True
+        break
+
+if finished:
+    print(f'Racing car {racing_number} finished the stage!')
+if disqualified:
+    print(f'Racing car {racing_number} DNF.')
+race_matrix[car_row][car_col] = 'C'
+
+print(f'Distance covered {kilometers} km.')
+
+for r in range(len(race_matrix)):
+    print(''.join(race_matrix[r]))
