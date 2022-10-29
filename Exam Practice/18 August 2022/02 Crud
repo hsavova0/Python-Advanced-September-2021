@@ -1,0 +1,54 @@
+def changed_coordinates(r, c, d):
+    if d == 'up':
+        r -= 1
+        return r, c
+    elif d == 'down':
+        r += 1
+        return r, c
+    elif d == 'left':
+        c -= 1
+        return r, c
+    elif d == 'right':
+        c += 1
+        return r, c
+
+
+size = 6
+matrix = []
+
+for i in range(size):
+    matrix.append(input().split(' '))
+
+coordinate = input()
+rol, col = int(coordinate[1]), int(coordinate[4])
+
+
+while True:
+    commands = input()
+    if commands == 'Stop':
+        break
+    else:
+        instructions = commands.split(', ')
+        command, direction = instructions[0], instructions[1]
+
+    if command == 'Create':
+        value = instructions[2]
+        rol, col = changed_coordinates(rol, col, direction)
+        if matrix[rol][col] == '.':
+            matrix[rol][col] = value
+    elif command == 'Update':
+        value = instructions[2]
+        rol, col = changed_coordinates(rol, col, direction)
+        if not matrix[rol][col] == '.':
+            matrix[rol][col] = value
+    elif command == 'Delete':
+        rol, col = changed_coordinates(rol, col, direction)
+        if not matrix[rol][col] == '.':
+            matrix[rol][col] = '.'
+    elif command == 'Read':
+        rol, col = changed_coordinates(rol, col, direction)
+        if not matrix[rol][col] == '.':
+            print(matrix[rol][col])
+
+for el in range(len(matrix)):
+    print(' '.join(matrix[el]))
