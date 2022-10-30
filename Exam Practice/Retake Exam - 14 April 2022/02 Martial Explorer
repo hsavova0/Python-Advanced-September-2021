@@ -113,3 +113,88 @@ if water_deposit > 0 and metal_deposit > 0 and concrete_deposit > 0:
     print('Area suitable to start the colony.')
 else:
     print('Area not suitable to start the colony.')
+
+2nd variant: where is None comming from:
+def is_outside_matrix(size, r, c, is_outside):
+    if r < 0 or r > size or c < 0 or c > size:
+        is_outside = True
+    return is_outside
+
+
+def new_position(new_row, new_col, direction):
+    is_outside = False
+    size_matrix = 5
+    if direction == 'up':
+        new_row -= 1
+        is_outside = is_outside_matrix(size_matrix, new_row, new_col, is_outside)
+        if is_outside:
+            new_row = 5
+    elif direction == 'down':
+        new_row += 1
+        is_outside = is_outside_matrix(size_matrix, new_row, new_col, is_outside)
+        if is_outside:
+            new_row = 0
+    elif direction == 'left':
+        new_col -= 1
+        is_outside = is_outside_matrix(size_matrix, new_row, new_col, is_outside)
+        if is_outside:
+            new_col = 5
+    elif direction == 'right':
+        new_col += 1
+        is_outside = is_outside_matrix(size_matrix, new_row, new_col, is_outside)
+        if is_outside:
+            new_col = 0
+    return new_row, new_col
+
+
+from collections import deque
+
+size = 6
+matrix = []
+
+rover_rol, rover_col = 0, 0
+is_suitable_for_life = False
+is_broken = False
+resources = {
+    'W': 0,
+    'M': 0,
+    'C': 0,
+}
+
+for i in range(size):
+    matrix.append(input().split())
+    for j in range(len(matrix[i])):
+        if matrix[i][j] == 'E':
+            rover_rol, rover_col = i, j
+commands = deque(input().split(', '))
+
+while commands:
+    command = commands.popleft()
+    rover_rol, rover_col = new_position(rover_rol, rover_col, command)
+    current_rover_position = matrix[rover_rol][rover_col]
+    if current_rover_position == 'W':
+        resources[current_rover_position] += 1
+        print(f'Water deposit found at ({rover_rol}, {rover_col})')
+    elif current_rover_position == 'M':
+        resources[current_rover_position] += 1
+        print(f'Metal deposit found at ({rover_rol}, {rover_col})')
+    elif current_rover_position == 'C':
+        resources[current_rover_position] += 1
+        print(f'Concrete deposit found at ({rover_rol}, {rover_col})')
+    elif current_rover_position == 'R':
+        is_broken = True
+        break
+
+if is_broken:
+    print(print(f'Rover got broken at ({rover_rol}, {rover_col})'))
+
+for key, value in resources.items():
+    if value > 0:
+        is_suitable_for_life = True
+    else:
+        is_suitable_for_life = False
+
+if is_suitable_for_life:
+    print('Area suitable to start the colony.')
+else:
+    print('Area not suitable to start the colony.')
