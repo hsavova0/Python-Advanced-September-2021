@@ -1,0 +1,26 @@
+from collections import deque
+
+energy = deque([int(x) for x in input().split()])
+box = [int(x) for x in input().split()]
+
+total_energy = 0
+total_toys = 0
+
+count = 0
+
+while energy and box:
+    current_energy = energy.popleft()
+    current_material = box.pop()
+    count += 1
+    if current_energy >= current_material:
+        total_toys += 1
+    if count % 3 == 0:
+        current_material = current_material * 2
+        if current_energy >= current_material:
+            total_toys += 2
+            current_energy += 1
+            energy.append(current_energy)
+    if count % 5 == 0:
+        pass
+    if count % 3 and count % 5 == 0:
+        pass
