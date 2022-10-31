@@ -1,0 +1,77 @@
+def is_object_outside(rol, col, current_rol, current_col, is_outside):
+    if current_rol < 0 or current_rol > rol:
+        is_outside = True
+        return is_outside
+    if 0 < current_col or current_col > col:
+        is_outside = True
+        return is_outside
+
+
+def new_position(rol, col, current_rol, current_col, direction):
+    is_outside = False
+    if direction == 'up':
+        current_rol -= 1
+        is_outside = is_object_outside(rol, col, current_rol, current_col, is_outside)
+    elif direction == 'down':
+        current_rol += 1
+        is_outside = is_object_outside(rol, col, current_rol, current_col, is_outside)
+    elif direction == 'left':
+        current_col -= 1
+        is_outside = is_object_outside(rol, col, current_rol, current_col, is_outside)
+    else:
+        current_col += 1
+        is_outside = is_object_outside(rol, col, current_rol, current_col, is_outside)
+    return current_rol, current_col
+
+
+r, c = [int(x) for x in input().split(', ')]
+matrix = []
+position_rol, position_col = 0, 0
+
+for rol in range(r):
+    matrix.append(input().split(' '))
+    for col in range(c):
+        if matrix[rol][col] == 'Y':
+            position_rol, position_col = rol, col
+
+collected_items = {
+    'D': 0,
+    'G': 0,
+    'C': 0
+}
+
+items_values = []
+is_christmas = False
+
+while True:
+    commands = input()
+    if commands == 'End':
+        break
+    else:
+        command = commands.split('-')
+        direction, steps = command[0], int(command[1])
+        matrix[position_rol][position_col] = 'x'
+        position_rol, position_col = new_position(r, c, position_rol, position_col, direction)
+        current_letter = matrix[position_rol][position_col]
+        if current_letter == 'D':
+            collected_items[current_letter] += 1
+        elif current_letter == 'G':
+            collected_items[current_letter] += 1
+        elif current_letter == 'C':
+            collected_items[current_letter] += 1
+        for key, value in collected_items.items():
+            items_values.append(value)
+        current_letter = 'Y'
+        if 0 not in items_values:
+            is_christmas = True
+            break
+
+if is_christmas:
+    print("Merry Christmas!")
+print("You've collected:")
+print(f"- {collected_items['D']} Christmas decorations")
+print(f"- {collected_items['G']} Gifts")
+print(f"- {collected_items['C']} Cookies")
+
+for el in range(len(matrix)):
+    print(' '.join(matrix[el]))
