@@ -50,18 +50,19 @@ while True:
     else:
         command = commands.split('-')
         direction, steps = command[0], int(command[1])
+    while steps:
         matrix[position_rol][position_col] = 'x'
         position_rol, position_col = new_position(r, c, position_rol, position_col, direction)
-        current_letter = matrix[position_rol][position_col]
-        if current_letter == 'D':
-            collected_items[current_letter] += 1
-        elif current_letter == 'G':
-            collected_items[current_letter] += 1
-        elif current_letter == 'C':
-            collected_items[current_letter] += 1
+        if matrix[position_rol][position_col] == 'D':
+            collected_items[matrix[position_rol][position_col]] += 1
+        elif matrix[position_rol][position_col] == 'G':
+            collected_items[matrix[position_rol][position_col]] += 1
+        elif matrix[position_rol][position_col] == 'C':
+            collected_items[matrix[position_rol][position_col]] += 1
+        steps -= 1
+        matrix[position_rol][position_col] = 'Y'
         for key, value in collected_items.items():
             items_values.append(value)
-        current_letter = 'Y'
         if 0 not in items_values:
             is_christmas = True
             break
