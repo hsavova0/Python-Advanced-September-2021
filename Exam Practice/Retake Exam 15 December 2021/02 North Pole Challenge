@@ -1,3 +1,5 @@
+66 %
+
 def new_position(row, col, direction, m):
     if direction == 'up':
         row -= 1
