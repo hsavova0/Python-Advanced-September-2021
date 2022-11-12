@@ -1,78 +1,82 @@
-def is_object_outside(rol, col, current_rol, current_col, is_outside):
-    if current_rol < 0 or current_rol > rol:
-        is_outside = True
-        return is_outside
-    if 0 < current_col or current_col > col:
-        is_outside = True
-        return is_outside
-
-
-def new_position(rol, col, current_rol, current_col, direction):
-    is_outside = False
+def new_position(row, col, direction, m):
     if direction == 'up':
-        current_rol -= 1
-        is_outside = is_object_outside(rol, col, current_rol, current_col, is_outside)
+        row -= 1
     elif direction == 'down':
-        current_rol += 1
-        is_outside = is_object_outside(rol, col, current_rol, current_col, is_outside)
+        row += 1
     elif direction == 'left':
-        current_col -= 1
-        is_outside = is_object_outside(rol, col, current_rol, current_col, is_outside)
+        col -= 1
     else:
-        current_col += 1
-        is_outside = is_object_outside(rol, col, current_rol, current_col, is_outside)
-    return current_rol, current_col
+        col += 1
+    return row, col
 
 
 r, c = [int(x) for x in input().split(', ')]
+position_row, position_col = 0, 0
 matrix = []
-position_rol, position_col = 0, 0
-
-for rol in range(r):
-    matrix.append(input().split(' '))
-    for col in range(c):
-        if matrix[rol][col] == 'Y':
-            position_rol, position_col = rol, col
-
-collected_items = {
+christmas_objects = {
     'D': 0,
     'G': 0,
-    'C': 0
+    'C': 0,
 }
+all_objects_gathered = False
 
-items_values = []
-is_christmas = False
+for row in range(r):
+    matrix.append(input().split())
+for row in range(r):
+    for col in range(c):
+        if matrix[row][col] == 'Y':
+            position_row, position_col = row, col
+            break
+matrix[position_row][position_col] = 'x'
 
 while True:
-    commands = input()
-    if commands == 'End':
+    command = input()
+    if command == 'End':
         break
-    else:
-        command = commands.split('-')
-        direction, steps = command[0], int(command[1])
-    while steps:
-        matrix[position_rol][position_col] = 'x'
-        position_rol, position_col = new_position(r, c, position_rol, position_col, direction)
-        if matrix[position_rol][position_col] == 'D':
-            collected_items[matrix[position_rol][position_col]] += 1
-        elif matrix[position_rol][position_col] == 'G':
-            collected_items[matrix[position_rol][position_col]] += 1
-        elif matrix[position_rol][position_col] == 'C':
-            collected_items[matrix[position_rol][position_col]] += 1
+    direction, step = command.split('-')
+    steps = int(step)
+    while steps > 0:
+        position_row, position_col = new_position(position_row, position_col, direction, matrix)
+        if position_row <= 0 or position_row > r - 1:
+            if direction == 'up':
+                position_row = r - 1
+            elif direction == 'down':
+                position_row = 0
+        if position_col < 0 or position_col > c - 1:
+            if direction == 'left':
+                position_col = c - 1
+            elif direction == 'right':
+                position_col = 0
+        if matrix[position_row][position_col] == 'D':
+            christmas_objects[matrix[position_row][position_col]] += 1
+        elif matrix[position_row][position_col] == 'G':
+            christmas_objects[matrix[position_row][position_col]] += 1
+        elif matrix[position_row][position_col] == 'C':
+            christmas_objects[matrix[position_row][position_col]] += 1
+        matrix[position_row][position_col] = 'x'
         steps -= 1
-        matrix[position_rol][position_col] = 'Y'
-        for key, value in collected_items.items():
-            items_values.append(value)
-        if 0 not in items_values:
-            is_christmas = True
-            break
-
-if is_christmas:
-    print("Merry Christmas!")
+        for i in range(len(matrix)):
+            for j in range(len(matrix[i])):
+                if matrix[i][j] == 'G' or matrix[i][j] == 'C' or matrix[i][j] == 'D':
+                    all_objects_gathered = False
+                else:
+                    all_objects_gathered = True
+        if all_objects_gathered:
+            for el in matrix:
+                if 'D' in el or 'G' in el or 'C' in el:
+                    all_objects_gathered = False
+                    continue
+            if all_objects_gathered:
+                break
+    if all_objects_gathered:
+        break
+matrix[position_row][position_col] = 'Y'
+if all_objects_gathered:
+    print('Merry Christmas!')
 print("You've collected:")
-print(f"- {collected_items['D']} Christmas decorations")
-print(f"- {collected_items['G']} Gifts")
-print(f"- {collected_items['C']} Cookies")
+print(f'- {christmas_objects["D"]} Christmas decorations')
+print(f'- {christmas_objects["G"]} Gifts')
+print(f'- {christmas_objects["C"]} Cookies')
 
-for el in range(len(matrix)):
-    print(' '.join(matrix[el]))
+for el in matrix:
+    print(' '.join(el))
