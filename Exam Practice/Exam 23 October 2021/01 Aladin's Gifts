@@ -1,0 +1,51 @@
+85 %
+from collections import deque
+materials = [int(i) for i in input().split()]
+magic = deque(int(i) for i in input().split())
+
+gifts_dictionary = {
+    'Gemstone': 0,
+    'Porcelain Sculpture': 0,
+    'Gold': 0,
+    'Diamond Jewellery': 0,
+}
+
+while materials and magic:
+    current_material = materials.pop()
+    current_magic = magic.popleft()
+    gift_value = current_material + current_magic
+    if gift_value < 100:
+        if gift_value // 2 == 0:
+            new_material = current_material * 3
+            new_magic = current_magic * 2
+            current_magic = new_material + new_magic
+        else:
+            gift_value = gift_value * 2
+    if gift_value > 499:
+        gift_value = gift_value // 2
+    if 100 <= gift_value and gift_value <= 199:
+        gifts_dictionary['Gemstone'] += 1
+    elif 200 <= gift_value and gift_value <= 299:
+        gifts_dictionary['Porcelain Sculpture'] += 1
+    elif 300 <= gift_value and gift_value <= 399:
+        gifts_dictionary['Gold'] += 1
+    elif 400 <= gift_value  and gift_value <= 499:
+        gifts_dictionary['Diamond Jewellery'] += 1
+
+if gifts_dictionary['Gemstone'] > 0 and gifts_dictionary['Porcelain Sculpture'] > 0:
+    print("The wedding presents are made!")
+elif gifts_dictionary['Gold'] > 0 and gifts_dictionary['Diamond Jewellery'] > 0:
+    print("The wedding presents are made!")
+else:
+    print("Aladdin does not have enough wedding presents.")
+
+if materials:
+    print(f'Materials left: {", ".join(str(el) for el in materials)}')
+
+if magic:
+    print(f'Magic left: {", ".join(str(el) for el in magic)}')
+
+gifts_dictionary_sorted = sorted(gifts_dictionary.items())
+for key, value in gifts_dictionary_sorted:
+    if gifts_dictionary[key] > 0:
+        print(f'{key}: {value}')
