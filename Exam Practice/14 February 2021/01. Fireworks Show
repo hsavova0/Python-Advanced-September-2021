@@ -4,9 +4,9 @@ firework_effect = deque([int(i) for i in input().split(', ')])
 explosive_power = [int(i) for i in input().split(', ')]
 
 fireworks = {
-    'Palm firework': 0,
-    'Willow firework': 0,
-    'Crossette firework': 0
+    'Palm Fireworks': 0,
+    'Willow Fireworks': 0,
+    'Crossette Fireworks': 0
 }
 
 perfect_fireworks = False
@@ -14,24 +14,25 @@ perfect_fireworks = False
 while firework_effect and explosive_power:
     current_effect = firework_effect.popleft()
     current_power = explosive_power.pop()
-    possible_firework = current_effect + current_power
     if current_effect <= 0 or current_power <= 0:
         if current_effect <= 0:
             explosive_power.append(current_power)
-        if current_power <= 0:
-            firework_effect.append(current_effect)
             continue
+        if current_power <= 0:
+            firework_effect.appendleft(current_effect)
+            continue
+    possible_firework = current_effect + current_power
     if possible_firework % 3 == 0 and possible_firework % 5 == 0:
-        fireworks['Crossette firework'] += 1
+        fireworks['Crossette Fireworks'] += 1
     elif possible_firework % 3 == 0:
-        fireworks['Palm firework'] += 1
+        fireworks['Palm Fireworks'] += 1
     elif possible_firework % 5 == 0:
-        fireworks['Willow firework'] += 1
+        fireworks['Willow Fireworks'] += 1
     else:
         current_effect -= 1
         firework_effect.append(current_effect)
         explosive_power.append(current_power)
-    if fireworks['Palm firework'] >= 3 and fireworks['Willow firework'] >= 3 and fireworks['Crossette firework'] >= 3:
+    if fireworks['Palm Fireworks'] >= 3 and fireworks['Willow Fireworks'] >= 3 and fireworks['Crossette Fireworks'] >= 3:
         perfect_fireworks = True
         break
 
